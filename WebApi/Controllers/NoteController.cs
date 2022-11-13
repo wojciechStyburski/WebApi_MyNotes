@@ -1,6 +1,7 @@
 ﻿using Application.Dto;
 using Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace WebApi.Controllers;
 
@@ -13,22 +14,23 @@ public class NoteController : ControllerBase
 	{
 		_noteService = noteService;
 	}
-
-	[HttpGet]
-	public IActionResult GetAllNotes()
+    
+    [HttpGet]
+	[SwaggerOperation(Summary = "Get all notes")]
+    public IActionResult GetAllNotes()
 	{
 		var notes = _noteService.GetAllNotes();
 		return Ok(notes);
 	}
-
+    [SwaggerOperation(Summary = "Get notes by title or content search query")]
     [HttpGet("search")]
     public IActionResult GetNotesBySearchPhrase([FromQuery] string searchPhrase)
     {
         var notes = _noteService.GetNotesBySearchPhrase(searchPhrase);
         return Ok(notes);
     }
-
-	[HttpGet("{id}")]
+    [SwaggerOperation(Summary = "Get note by id")]
+    [HttpGet("{id}")]
 	public IActionResult GetNoteById(int id)
 	{
 		var note = _noteService.GetNoteById(id);
@@ -36,14 +38,16 @@ public class NoteController : ControllerBase
     }
 
 	[HttpPost]
-	public IActionResult CreateNote(CreateNoteDto createNoteDto)
+    [SwaggerOperation(Summary = "Create note")]
+    public IActionResult CreateNote(CreateNoteDto createNoteDto)
 	{
 		var note = _noteService.AddNewNote(createNoteDto);
 		return Created($"api/notes/{note.Id}", note);
 	}
 
 	[HttpPut("{id}")]
-	public IActionResult UpdateNote(int id, UpdateNoteDto updateNoteDto)
+    [SwaggerOperation(Summary = "Update note")]
+    public IActionResult UpdateNote(int id, UpdateNoteDto updateNoteDto)
 	{
 		var noteToUpdate = _noteService.GetNoteById(id);
 		_noteService.UpdateNote(noteToUpdate.Id, updateNoteDto);
@@ -51,6 +55,7 @@ public class NoteController : ControllerBase
 	}
 
     [HttpDelete("{id}")]
+    [SwaggerOperation(Summary = "Delete note")]
     public IActionResult DeleteNote(int id)
     {
 		_noteService.DeleteNote(id);
