@@ -1,6 +1,7 @@
 ﻿using Application.Dto;
 using Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace WebApi.Controllers;
 
@@ -16,6 +17,7 @@ public class CategoryController : ControllerBase
     }
 
     [HttpGet]
+    [SwaggerOperation(Summary = "Get all categories")]
     public IActionResult GetAllCategories()
     {
         var categories = _categoryService.GetAllCategories();
@@ -24,6 +26,7 @@ public class CategoryController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [SwaggerOperation(Summary = "Get category by id")]
     public IActionResult GetCategoryById(int id)
     {
         var category = _categoryService.GetCategoryById(id);
@@ -32,6 +35,7 @@ public class CategoryController : ControllerBase
     }
 
     [HttpPost]
+    [SwaggerOperation(Summary = "Create category")]
     public IActionResult CreateCategory(CreateUpdateCategoryDto createCategory)
     {
         var category = _categoryService.AddNewCategory(createCategory);
@@ -40,6 +44,7 @@ public class CategoryController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [SwaggerOperation(Summary = "Update category")]
     public IActionResult UpdateCategory(int id, CreateUpdateCategoryDto updateCategory)
     {
         var categoryToUpdate = _categoryService.GetCategoryById(id);
@@ -49,6 +54,7 @@ public class CategoryController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [SwaggerOperation(Summary = "Delete category")]
     public IActionResult DeleteCategory(int id)
     {
         _categoryService.DeleteCategory(id);
